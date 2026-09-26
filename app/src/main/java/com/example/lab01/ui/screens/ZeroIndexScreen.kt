@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.screens
+package com.example.lab01.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,14 +16,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.myapplication.domain.BubbleSort
-import com.example.myapplication.ui.theme.MyApplicationTheme
+import com.example.lab01.domain.ZeroIndexFinder
+import com.example.lab01.ui.theme.MyApplicationTheme
+
 
 @Composable
-fun BubbleSortScreen(modifier: Modifier = Modifier) {
+fun ZeroIndexScreen(modifier: Modifier = Modifier) {
+
     var input by remember { mutableStateOf("") }
     var output by remember { mutableStateOf("") }
-    var autoMode by remember { mutableStateOf(false) }
+
+    val finder = ZeroIndexFinder()
+
 
     Column(
         modifier = modifier
@@ -31,54 +35,64 @@ fun BubbleSortScreen(modifier: Modifier = Modifier) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+
         OutlinedTextField(
             value = input,
-            onValueChange = { newValue ->
-                input = newValue
-                if (autoMode) {
-                    output = BubbleSort.runSort(newValue)
-                }
+            onValueChange = {
+                input = it
             },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Числа") },
+            label = {
+                Text("Введите числа через пробел")
+            }
         )
+
+
+        Button(
+            onClick = {
+
+                val numbers = input
+                    .split(" ")
+                    .filter { it.isNotEmpty() }
+                    .map { it.toInt() }
+
+
+                val result = finder.findZeroIndexes(numbers)
+
+
+                output = result.toString()
+
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+
+            Text("Найти индексы нулей")
+
+        }
+
 
         OutlinedTextField(
             value = output,
             onValueChange = {},
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Результат") },
+            label = {
+                Text("Индексы элементов со значением 0")
+            },
             minLines = 2
         )
 
-        Button(
-            onClick = {
-                output = BubbleSort.runSort(input)
-            },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = !autoMode
-        ) {
-            Text("Отсортировать")
-        }
-
-        Button(
-            onClick = {
-                autoMode = !autoMode
-                if (autoMode) {
-                    output = BubbleSort.runSort(input)
-                }
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(if (autoMode) "Автоматический режим ВКЛ" else "Автоматический режим ВЫКЛ")
-        }
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
-fun BubbleSortScreenPreview() {
+fun ZeroIndexScreenPreview() {
+
     MyApplicationTheme {
-        BubbleSortScreen()
+
+        ZeroIndexScreen()
+
     }
+
 }
