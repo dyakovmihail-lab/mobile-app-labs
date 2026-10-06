@@ -1,10 +1,10 @@
-package com.example.myapplication
+package com.example.lab01
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.myapplication.ui.screens.BubbleSortScreen
+import com.example.lab01.ui.screens.ZeroIndexScreen
 
 @Composable
 fun AppRoot(modifier: Modifier = Modifier) {
-    BubbleSortScreen(modifier = modifier)
+    ZeroIndexScreen(modifier = modifier)
 }
